@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  discordId String   @unique
+  username  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  entries       Entry[]
+  userBooks     UserBook[]
+  conversations ConversationState[]
+
+  @@map("users")
+}
+
+model Book {
+  id          String   @id @default(cuid())
+  title       String
+  author      String?
+  imageUrl    String?
+  isbn        String?  @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  entries   Entry[]
+  userBooks UserBook[]
+
+  @@map("books")
+}
+
+model UserBook {
+  id        String   @id @default(cuid())
+  userId    String
+  bookId    String
+  status    ReadingStatus
+  startDate DateTime?
+  endDate   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, bookId])
+  @@map("user_books")
+}
+
+model Entry {
+  id          String    @id @default(cuid())
+  content     String
+  type        EntryType
+  userId      String
+  bookId      String?
+  sourceUrl   String?
+  messageId   String?   @unique
+  channelId   String?
+  threadId    String?
+  isCompleted Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book? @relation(fields: [bookId], references: [id], onDelete: SetNull)
+
+  @@map("entries")
+}
+
+model ConversationState {
+  id             String            @id @default(cuid())
+  userId         String
+  channelId      String
+  threadId       String?
+  state          ConversationType
+  pendingEntryId String?
+  context        Json?
+  expiresAt      DateTime
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, channelId])
+  @@map("conversation_states")
+}
+
+enum ReadingStatus {
+  CURRENTLY_READING
+  FINISHED
+  DROPPED
+}
+
+enum EntryType {
+  QUOTE
+  THOUGHT
+  REACTION
+  OCR_TEXT
+}
+
+enum ConversationType {
+  AWAITING_BOOK_SOURCE
+  AWAITING_BOOK_SELECTION
+  OCR_TEXT_SELECTION
+}

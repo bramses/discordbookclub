@@ -1,0 +1,30 @@
+{
+  "name": "discord-bookclub-bot",
+  "version": "1.0.0",
+  "description": "Discord bot for book club commonbase management",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "deploy": "node src/deploy-commands.js",
+    "db:generate": "npx prisma generate",
+    "db:migrate": "npx prisma migrate dev",
+    "db:push": "npx prisma db push",
+    "db:studio": "npx prisma studio"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "@prisma/client": "^5.7.0",
+    "tesseract.js": "^5.0.4",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "sharp": "^0.33.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "prisma": "^5.7.0"
+  },
+  "keywords": ["discord", "bot", "bookclub", "commonbase"],
+  "author": "Book Club",
+  "license": "MIT"
+}
