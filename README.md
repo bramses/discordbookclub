@@ -1,3 +1,6 @@
+<img width="1414" height="1310" alt="Screenshot 2025-11-24 19-01-12" src="https://github.com/user-attachments/assets/33be0898-5600-41f3-b21d-9eb53d9a9485" />
+
+
 # Discord Book Club Bot
 
 A Discord bot for managing a book club's shared knowledge base (commonbase). Members can store quotes, thoughts, and reading lists while the bot tracks books and provides multi-turn conversations for context gathering.
