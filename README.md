@@ -137,10 +137,10 @@ To deploy your Discord bot on Render:
 Create a `render.yaml` file in your project root:
 ```yaml
 services:
-  - type: web
+  - type: worker
     name: discord-bookclub-bot
     env: node
-    buildCommand: npm install
+    buildCommand: npm install && npm run deploy
     startCommand: npm start
     envVars:
       - key: NODE_ENV
@@ -166,8 +166,8 @@ Ensure your `package.json` has a start script:
 
 ### 3. Deploy the Bot
 
-1. **Create Web Service:**
-   - In Render dashboard, click "New +" → "Web Service"
+1. **Create Worker Service:**
+   - In Render dashboard, click "New +" → "Background Worker"
    - Connect your GitHub repository
    - Configure:
      - **Name:** discord-bookclub-bot

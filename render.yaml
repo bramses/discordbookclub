@@ -1,5 +1,5 @@
 services:
-  - type: web
+  - type: worker
     name: discord-bookclub-bot
     env: node
     buildCommand: npm install && npm run deploy
