@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: discord-bookclub-bot
+    env: node
+    buildCommand: npm install && npm run deploy
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: DISCORD_CLIENT_ID
+        sync: false
+      - key: DISCORD_GUILD_ID
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: BOOKSHELF_URL
+        sync: false
+      - key: GRAPH_URL
+        sync: false
+
+databases:
+  - name: bookclub-db
+    databaseName: discordbookclub
+    user: bookclub

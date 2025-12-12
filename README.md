@@ -128,6 +128,82 @@ A Discord bot for managing a book club's shared knowledge base (commonbase). Mem
    npm run dev
    ```
 
+## Hosting on Render
+
+To deploy your Discord bot on Render:
+
+### 1. Prepare for Deployment
+
+Create a `render.yaml` file in your project root:
+```yaml
+services:
+  - type: web
+    name: discord-bookclub-bot
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+```
+
+Ensure your `package.json` has a start script:
+```json
+{
+  "scripts": {
+    "start": "node src/index.js"
+  }
+}
+```
+
+### 2. Set up Database
+
+1. **Create PostgreSQL Database:**
+   - In Render dashboard, click "New +" → "PostgreSQL"
+   - Choose a name (e.g., "bookclub-db")
+   - Select region and plan
+   - Copy the "External Database URL" for later
+
+### 3. Deploy the Bot
+
+1. **Create Web Service:**
+   - In Render dashboard, click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Configure:
+     - **Name:** discord-bookclub-bot
+     - **Environment:** Node
+     - **Build Command:** `npm install`
+     - **Start Command:** `npm start`
+
+2. **Set Environment Variables:**
+   - `DISCORD_TOKEN` - Your Discord bot token
+   - `DISCORD_CLIENT_ID` - Your Discord application client ID
+   - `DISCORD_GUILD_ID` - Your Discord server ID
+   - `DATABASE_URL` - The PostgreSQL URL from step 2
+   - `BOOKSHELF_URL` - URL to your bookshelf app (if deployed)
+   - `GRAPH_URL` - URL to your visualization app (if deployed)
+   - `NODE_ENV` - `production`
+
+3. **Deploy Commands:**
+   - After first deployment, run: `npm run deploy` in the Render shell
+   - Or add as a build command: `npm install && npm run deploy`
+
+### 4. Database Setup
+
+Run migrations after deployment:
+```bash
+npm run db:migrate
+npm run db:generate
+```
+
+You can run these in the Render shell or add them to your build process.
+
+### Notes
+- Render automatically deploys when you push to your connected Git branch
+- The bot will restart automatically if it crashes
+- Check the Render logs if you encounter issues
+- Consider using Render's health checks for better reliability
+
 ## Environment Variables
 
 - `DISCORD_TOKEN` - Your Discord bot token
